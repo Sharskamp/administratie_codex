@@ -1,0 +1,2 @@
+import { prisma } from '@/lib/prisma';import { euro,d } from '@/lib/utils';
+export default async function P(){const items=await prisma.factuur.findMany({include:{klant:true},orderBy:{datum:'desc'}});return <div className='card'><h1>Facturen</h1><table><thead><tr><th>Nummer</th><th>Klant</th><th>Datum</th><th>Status</th><th>Totaal</th></tr></thead><tbody>{items.map(i=><tr key={i.id}><td>{i.nummer}</td><td>{i.klant.naam}</td><td>{d(i.datum)}</td><td>{i.status}</td><td>{euro(i.totaal)}</td></tr>)}</tbody></table></div>}

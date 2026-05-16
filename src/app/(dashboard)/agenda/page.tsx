@@ -1,0 +1,2 @@
+import { prisma } from '@/lib/prisma';
+export default async function P(){const a=await prisma.afspraak.findMany({orderBy:{start:'asc'}});return <div className='card'><h1>Agenda (Google cache)</h1><p className='muted'>Afspraken gecachet; later met live OAuth refresh.</p><table><thead><tr><th>Titel</th><th>Start</th><th>Einde</th></tr></thead><tbody>{a.map(x=><tr key={x.id}><td>{x.titel}</td><td>{new Date(x.start).toLocaleString('nl-NL')}</td><td>{new Date(x.einde).toLocaleString('nl-NL')}</td></tr>)}</tbody></table></div>}

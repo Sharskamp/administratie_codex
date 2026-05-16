@@ -1,0 +1,2 @@
+import { prisma } from '@/lib/prisma';
+export default async function Page(){const rows=await prisma.uurregistratie.findMany({orderBy:{start:'desc'}});return <div className='card'><h1>Urenregistratie</h1><form action='/api/offertes' method='get'></form><table><thead><tr><th>Omschrijving</th><th>Start</th><th>Eind</th><th>Duur (min)</th></tr></thead><tbody>{rows.map(r=><tr key={r.id}><td>{r.omschrijving}</td><td>{new Date(r.start).toLocaleString('nl-NL')}</td><td>{r.eind?new Date(r.eind).toLocaleString('nl-NL'):'-'}</td><td>{r.duurMinuten}</td></tr>)}</tbody></table></div>}

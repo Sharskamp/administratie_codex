@@ -1,0 +1,2 @@
+import Link from 'next/link';import { prisma } from '@/lib/prisma';
+export default async function P(){const klanten=await prisma.klant.findMany({orderBy:{createdAt:'desc'}});return <div className='card'><h1>Klanten</h1><Link className='btn' href='/klanten/nieuw'>Nieuwe klant</Link><table><thead><tr><th>Naam</th><th>Email</th><th>Telefoon</th></tr></thead><tbody>{klanten.map(k=><tr key={k.id}><td>{k.naam}</td><td>{k.email}</td><td>{k.telefoon}</td></tr>)}</tbody></table></div>}
