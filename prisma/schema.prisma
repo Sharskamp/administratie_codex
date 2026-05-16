@@ -1,0 +1,29 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "sqlite" url = env("DATABASE_URL") }
+
+enum FactuurStatus { CONCEPT VERZONDEN BETAALD VERLOPEN GEANNULEERD }
+enum OfferteStatus { CONCEPT VERZONDEN GEACCEPTEERD AFGEWEZEN VERLOPEN }
+
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  passwordHash String
+  bedrijfsnaam String?
+  kvk String?
+  btwNummer String?
+  iban String?
+  googleAccessToken String?
+  googleRefreshToken String?
+  createdAt DateTime @default(now())
+}
+
+model Klant { id String @id @default(cuid()) naam String email String? telefoon String? adres String? kvk String? btwNummer String? facturen Factuur[] offertes Offerte[] createdAt DateTime @default(now()) }
+model Factuur { id String @id @default(cuid()) nummer String @unique klantId String klant Klant @relation(fields:[klantId], references:[id]) datum DateTime @default(now()) vervalDatum DateTime status FactuurStatus @default(CONCEPT) subtotaal Float @default(0) btw Float @default(0) totaal Float @default(0) regels FactuurRegel[] inkomens Inkomen[] createdAt DateTime @default(now()) }
+model FactuurRegel { id String @id @default(cuid()) factuurId String factuur Factuur @relation(fields:[factuurId], references:[id], onDelete: Cascade) omschrijving String aantal Float prijs Float btwPercentage Float regelTotaal Float korting Float @default(0) }
+model Offerte { id String @id @default(cuid()) nummer String @unique klantId String klant Klant @relation(fields:[klantId], references:[id]) status OfferteStatus @default(CONCEPT) totaal Float @default(0) regels OfferteRegel[] }
+model OfferteRegel { id String @id @default(cuid()) offerteId String offerte Offerte @relation(fields:[offerteId], references:[id], onDelete: Cascade) omschrijving String aantal Float prijs Float btwPercentage Float }
+model Inkomen { id String @id @default(cuid()) datum DateTime bedrag Float omschrijving String? factuurId String? factuur Factuur? @relation(fields:[factuurId], references:[id]) }
+model Categorie { id String @id @default(cuid()) naam String @unique uitgaven Uitgave[] }
+model Uitgave { id String @id @default(cuid()) datum DateTime bedrag Float btw Float @default(0) leverancier String? bonPad String? categorieId String? categorie Categorie? @relation(fields:[categorieId], references:[id]) }
+model Afspraak { id String @id @default(cuid()) externId String? @unique titel String start DateTime einde DateTime klantNaam String? teFactureren Boolean @default(true) }
+model Uurregistratie { id String @id @default(cuid()) omschrijving String start DateTime eind DateTime? duurMinuten Int @default(0) uurtarief Float @default(0) }
