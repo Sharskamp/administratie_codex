@@ -1,1 +1,0 @@
-export default function P(){return <form className='card' action='/api/klanten' method='post'><h1>Nieuwe klant</h1><input name='naam' placeholder='Naam' required/><input name='email' placeholder='E-mail'/><input name='telefoon' placeholder='Telefoon'/><button className='btn'>Opslaan</button></form>}
