@@ -1,5 +1,4 @@
 import csv
-import os
 import sqlite3
 import tkinter as tk
 from dataclasses import dataclass
@@ -25,6 +24,7 @@ class DB:
         self.conn.row_factory = sqlite3.Row
         self.create_tables()
         self.migrate()
+        self.seed_defaults()
 
     def create_tables(self):
         self.conn.executescript(
@@ -39,8 +39,6 @@ class DB:
                 google_client_path TEXT,
                 google_connected INTEGER DEFAULT 0
             );
-            INSERT OR IGNORE INTO settings (id, vat_rate, google_connected) VALUES (1, 21, 0);
-
             CREATE TABLE IF NOT EXISTS customers (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
@@ -128,8 +126,6 @@ class DB:
             """
         )
         self.conn.commit()
-        for cat in ["Software", "Reiskosten", "Kantoor", "Marketing", "Overig"]:
-            self.q("INSERT OR IGNORE INTO expense_categories(name) VALUES(?)", (cat,))
 
     def migrate(self):
         cols = [r[1] for r in self.q("PRAGMA table_info(settings)").fetchall()]
@@ -137,6 +133,14 @@ class DB:
             self.q("ALTER TABLE settings ADD COLUMN company_iban TEXT")
         if "company_kvk" not in cols:
             self.q("ALTER TABLE settings ADD COLUMN company_kvk TEXT")
+        if "vat_rate" not in cols:
+            self.q("ALTER TABLE settings ADD COLUMN vat_rate REAL DEFAULT 21")
+
+    def seed_defaults(self):
+        self.q("INSERT OR IGNORE INTO settings (id, google_connected) VALUES (1, 0)")
+        self.q("UPDATE settings SET vat_rate = COALESCE(vat_rate, 21) WHERE id=1")
+        for cat in ["Software", "Reiskosten", "Kantoor", "Marketing", "Overig"]:
+            self.q("INSERT OR IGNORE INTO expense_categories(name) VALUES(?)", (cat,))
 
     def q(self, sql, params=()):
         cur = self.conn.cursor()
