@@ -1,34 +1,44 @@
-# Administratie Software voor Windows (MVP)
+# ZZP Administratie Pro (Windows MVP+)
 
-Lokale desktopapp (Python + Tkinter + SQLite) voor administratie.
+Deze versie is een veel bruikbaardere basis voor een zzp'er op Windows.
 
-## Functionaliteiten
-- Klantbeheer
-- Afspraken registreren
-- Facturen opstellen op basis van afspraken
-- Facturen versturen via e-mail (`mailto:`) of WhatsApp (`wa.me`)
-- Inkomsten registreren en koppelen aan facturen
-- Uitgaven registreren met categorie en bon-pad
-- Rapportage van inkomsten, uitgaven en saldo
-- Basis-instellingen voor Google account-koppeling (voorbereid op latere OAuth/sync)
+## Wat zit erin
+- Klantbeheer met uitgebreidere klantdata.
+- Agenda/afspraken met uren en tarief.
+- Facturen met:
+  - Jaar-gebaseerde factuurnummers (`INV-YYYY-00001`)
+  - Meerdere factuurregels vanuit geselecteerde afspraken
+  - BTW-berekening
+  - Statusflow (`concept`, `bevestigd`, `verzonden`, `betaald`)
+  - E-mail (`mailto`) en WhatsApp (`wa.me`) verzending
+  - CSV-export per factuur
+- Inkomstenregistratie met handmatige koppeling + auto-match op factuurnummer in omschrijving.
+- Uitgavenregistratie met categorieën, leverancier, BTW en bonbestand.
+- Dashboard met omzet, uitgaven, resultaat, betaald/openstaand.
+- Instellingen met bedrijfsgegevens en Google OAuth pad (voorbereid op Calendar-koppeling).
 
 ## Starten op Windows
-1. Installeer Python 3.11 of nieuwer.
-2. Open Command Prompt in deze map.
-3. Start de applicatie:
+1. Installeer Python 3.11+
+2. Open terminal in de projectmap
+3. Start:
 
 ```bash
 python admin_windows_app.py
 ```
 
-## Notities
-- De Google Calendar synchronisatie is voorbereid in instellingen en database, maar in deze MVP nog handmatig via afspraken.
-- WhatsApp verzending gebruikt de gratis `wa.me` deep-link fallback.
-- Data wordt lokaal opgeslagen in `admin_data.db`.
+## Data en backup
+- Data staat lokaal in `admin_data.db`.
+- Maak regelmatig backup van dit bestand.
 
-## Volgende iteratie (aanbevolen)
-- Google OAuth + echte Calendar event sync
-- PDF factuurgeneratie
-- SMTP verzending met bijlage
-- Bank CSV import + automatische matching
-- Build naar `.exe` met PyInstaller
+## Volgende stap (fase 2)
+- Echte Google Calendar OAuth en events ophalen.
+- Event->factuur wizard met bevestig/plan verzendmoment.
+- PDF-facturen met layout + automatische e-mail bijlage.
+- Bank CSV import met slimmere matching op bedrag + referentie.
+
+## Naar .exe bouwen
+Met PyInstaller (later):
+```bash
+pip install pyinstaller
+pyinstaller --noconsole --onefile --name ZZPAdministratie admin_windows_app.py
+```
