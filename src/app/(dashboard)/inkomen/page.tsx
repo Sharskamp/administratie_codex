@@ -1,0 +1,2 @@
+import { prisma } from '@/lib/prisma';import { euro,d } from '@/lib/utils';
+export default async function Page(){const rows=await prisma.inkomen.findMany({include:{factuur:true},orderBy:{datum:'desc'}});return <div className='card'><h1>Inkomsten</h1><table><thead><tr><th>Datum</th><th>Bedrag</th><th>Omschrijving</th><th>Factuur</th></tr></thead><tbody>{rows.map(r=><tr key={r.id}><td>{d(r.datum)}</td><td>{euro(r.bedrag)}</td><td>{r.omschrijving}</td><td>{r.factuur?.nummer||'-'}</td></tr>)}</tbody></table></div>}

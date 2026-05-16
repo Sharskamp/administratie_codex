@@ -1,0 +1,2 @@
+import { prisma } from '@/lib/prisma';import { euro,d } from '@/lib/utils';
+export default async function Page(){const rows=await prisma.uitgave.findMany({include:{categorie:true},orderBy:{datum:'desc'}});return <div className='card'><h1>Uitgaven</h1><table><thead><tr><th>Datum</th><th>Leverancier</th><th>Bedrag</th><th>Categorie</th></tr></thead><tbody>{rows.map(r=><tr key={r.id}><td>{d(r.datum)}</td><td>{r.leverancier||'-'}</td><td>{euro(r.bedrag)}</td><td>{r.categorie?.naam||'-'}</td></tr>)}</tbody></table></div>}

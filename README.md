@@ -1,13 +1,19 @@
 # ZZP Administratie Pro - Next.js 16
 
-Uitvoering van je gevraagde 5 vervolgstappen:
-1. NextAuth credentials login basis
-2. Factuur aanmaak met regels + BTW 21/9/0
-3. E-mail verzending (nodemailer) + WhatsApp deeplink endpoint
-4. Google Calendar integratie foundation (OAuth client helper + agenda API)
-5. BTW kwartaalrapportage pagina
+Deze iteratie voert de **volgende 10 stappen** uit richting een professioneel pakket:
 
-## Snelle setup
+1. Dashboard route-groep en layout volledig gemaakt
+2. KPI dashboardpagina toegevoegd
+3. Inkomstenmodule pagina toegevoegd
+4. Uitgavenmodule pagina toegevoegd
+5. Offertemodule + offerte→factuur conversie API toegevoegd
+6. Urenregistratie overzichtspagina toegevoegd
+7. Factuur printpagina (`/dashboard/facturen/[id]/print`) toegevoegd
+8. Categorie API toegevoegd
+9. Upload API toegevoegd voor bonnetjesbestanden
+10. Bankimport + herinneringen API endpoints toegevoegd
+
+## Setup
 ```bash
 npm install
 cp .env.example .env.local
@@ -16,21 +22,29 @@ npx prisma generate
 npm run dev
 ```
 
-## Nieuwe kernroutes
+## Belangrijkste routes
 - `/login`
 - `/dashboard`
 - `/dashboard/klanten`
 - `/dashboard/facturen`
 - `/dashboard/facturen/nieuw`
+- `/dashboard/facturen/[id]/print`
+- `/dashboard/offertes`
 - `/dashboard/agenda`
+- `/dashboard/inkomen`
+- `/dashboard/uitgaven`
+- `/dashboard/uren`
 - `/dashboard/rapporten`
 
-## API
-- `POST /api/facturen` (aanmaken)
-- `POST /api/facturen/verstuur` (email/whatsapp)
+## Belangrijkste API's
+- `GET/POST /api/klanten`
+- `GET/POST /api/facturen`
+- `POST /api/facturen/verstuur`
+- `GET/POST /api/offertes` (+ `?convert=<id>`)
 - `GET/POST /api/agenda`
 - `GET/POST /api/inkomen`
 - `GET/POST /api/uitgaven`
-
-## Let op
-Google OAuth callback + tokenopslag en volledige NextAuth sessiebeveiliging over alle routes zijn voorbereid maar nog niet volledig afgemaakt.
+- `GET/POST /api/categorieen`
+- `POST /api/upload`
+- `POST /api/bankimport`
+- `GET /api/herinneringen`
